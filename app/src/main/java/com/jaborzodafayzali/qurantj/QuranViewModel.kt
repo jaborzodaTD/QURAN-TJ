@@ -27,12 +27,7 @@ class QuranViewModel(app: Application) : AndroidViewModel(app) {
 
     fun open(s: Surah) {
         selectedSurah = s; loading = true; error = null
-        if (language.translationKey == null) {
-            ayahs = emptyList(); loading = false
-            error = "Барои ин забон манбаи тасдиқшудаи тарҷума ҳанӯз пайваст нашудааст."
-            return
-        }
-        viewModelScope.launch {
+                viewModelScope.launch {
             try {
                 ayahs = withContext(Dispatchers.IO) { repo.getSurah(s.number, language) }
                 if (ayahs.isEmpty()) error = "Тарҷума барои ин забон дастрас нест."
