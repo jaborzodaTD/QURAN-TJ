@@ -149,7 +149,7 @@ private fun next(t:PrayerTimes,code:String):String{val n=LocalTime.now();val x=t
     Text(d.category.uppercase(),fontSize=10.sp,color=G,fontWeight=FontWeight.Bold)
     Text(d.title,fontSize=18.sp,fontWeight=FontWeight.ExtraBold)
     Spacer(Modifier.height(12.dp))
-    Text(d.arabic,Modifier.fillMaxWidth(),textAlign=TextAlign.Right,fontSize=24.sp,lineHeight=42.sp,fontFamily=FontFamily.Serif)
+    if(d.arabic.isNotBlank()) Text(d.arabic,Modifier.fillMaxWidth(),textAlign=TextAlign.Right,fontSize=24.sp,lineHeight=42.sp,fontFamily=FontFamily.Serif)
     Spacer(Modifier.height(10.dp));HorizontalDivider()
     Spacer(Modifier.height(10.dp));Text(d.tajik,fontSize=16.sp,lineHeight=25.sp)
     Spacer(Modifier.height(9.dp));Text(d.source,fontSize=10.sp,color=MaterialTheme.colorScheme.onSurface.copy(.5f))
