@@ -209,7 +209,7 @@ private fun nextPrayer(t:PrayerTimes):String{
 @Composable
 private fun CityPicker(p:PrayerViewModel){
     Column(Modifier.padding(horizontal=16.dp)){
-        Text(UiTexts.of(q.language.code).location,fontWeight=FontWeight.Bold,fontSize=16.sp)
+        Text("Ҷойгиршавӣ",fontWeight=FontWeight.Bold,fontSize=16.sp)
         Spacer(Modifier.height(7.dp))
         Row(horizontalArrangement=Arrangement.spacedBy(6.dp)){
             AssistChip({p.useCity(PrayerLocation("Душанбе","Тоҷикистон",38.5598,68.7870))},{Text("Душанбе")})
@@ -239,7 +239,7 @@ private fun QiblaMini(p:PrayerViewModel){
 @Composable
 private fun Qibla(p:PrayerViewModel,modifier:Modifier){
     Column(modifier.fillMaxSize().padding(20.dp),horizontalAlignment=Alignment.CenterHorizontally){
-        Text(UiTexts.of("q.language.code").qibla,fontSize=30.sp,fontWeight=FontWeight.ExtraBold)
+        Text("Қибла",fontSize=30.sp,fontWeight=FontWeight.ExtraBold)
         Text(p.location?.city?:"Ҷойгиршавӣ лозим аст",color=MaterialTheme.colorScheme.onSurface.copy(.55f))
         Spacer(Modifier.height(20.dp))
         if(p.location==null) Text("Аз саҳифаи асосӣ ҷойгиршавиро фаъол кунед.")
