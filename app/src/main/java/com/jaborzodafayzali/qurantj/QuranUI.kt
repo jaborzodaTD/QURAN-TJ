@@ -90,7 +90,7 @@ private fun Dashboard(q:QuranViewModel,p:PrayerViewModel,modifier:Modifier){
                 }
             }
         }
-        item{PrayerCard(p)}
+        item{PrayerCard(q,p)}
         item{CityPicker(p)}
         item{QiblaMini(p)}
         item{
@@ -171,7 +171,7 @@ private fun LanguageCard(q: QuranViewModel){
 }
 
 @Composable
-private fun PrayerCard(p:PrayerViewModel){
+private fun PrayerCard(q:QuranViewModel,p:PrayerViewModel){
     val t=p.times
     Column(Modifier.padding(16.dp)){
         Text(UiTexts.of(q.language.code).prayerTimes,fontSize=21.sp,fontWeight=FontWeight.ExtraBold)
