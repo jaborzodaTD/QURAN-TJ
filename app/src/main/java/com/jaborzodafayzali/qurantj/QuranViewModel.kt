@@ -19,7 +19,7 @@ class QuranViewModel(app: Application) : AndroidViewModel(app) {
     var language by mutableStateOf(QuranLanguages.default(app))
         private set
 
-    fun setLanguage(value: QuranLanguage) {
+    fun selectLanguage(value: QuranLanguage) {
         language = value
         QuranLanguages.save(getApplication(), value)
         selectedSurah?.let(::open)
