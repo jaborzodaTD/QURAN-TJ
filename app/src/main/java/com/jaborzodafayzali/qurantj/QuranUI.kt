@@ -35,7 +35,7 @@ fun QuranTJApp(vm: QuranViewModel) {
             primary=Emerald, secondary=Color(0xFF9A7129), background=Cream, surface=Color.White
         )
     ) {
-        AnimatedContent(targetState=vm.selectedSurah, label="screen") { selected ->
+        AnimatedContent(targetState = vm.selectedSurah, label = "screen") { selected: Surah? ->
             if(selected==null) HomeScreen(vm) else ReaderScreen(vm, selected)
         }
     }
@@ -152,11 +152,12 @@ private fun ReaderScreen(vm:QuranViewModel,s:Surah) {
                     Text("Матни сура бор мешавад…")
                 }
             }
-            vm.error!=null -> Box(Modifier.fillMaxSize().padding(pad).padding(24.dp),contentAlignment=Alignment.Center){
+            vm.error != null -> Box(Modifier.fillMaxSize().padding(pad).padding(24.dp),contentAlignment=Alignment.Center){
                 Column(horizontalAlignment=Alignment.CenterHorizontally){
                     Text("⚠",fontSize=42.sp)
                     Spacer(Modifier.height(10.dp))
-                    Text(vm.error!!,textAlign=TextAlign.Center)
+                    val message = vm.error ?: ""
+                    Text(message,textAlign=TextAlign.Center)
                     Spacer(Modifier.height(16.dp))
                     Button(onClick={vm.open(s)}){Text("Дубора кӯшиш кардан")}
                 }
@@ -171,7 +172,7 @@ private fun ReaderScreen(vm:QuranViewModel,s:Surah) {
                         Text("${s.tajik} • ${s.ayahs} оят",fontSize=13.sp,color=MaterialTheme.colorScheme.onSurface.copy(alpha=.6f))
                     }
                 }
-                items(vm.ayahs,key={it.number}){a->AyahCard(a,vm.fontScale)}
+                items(items = vm.ayahs, key = { ayah: Ayah -> ayah.number }) { a: Ayah -> AyahCard(a,vm.fontScale) }
                 item{
                     Text(
                         "Матни арабӣ: Tanzil Project, Uthmani v1.1. Манбаи тарҷума: QuranEnc.com — тарҷумаи тоҷикӣ, Rowwad Translation Center. Матнҳо бетағйир истифода мешаванд.",
