@@ -133,12 +133,30 @@ private fun next(t:PrayerTimes,code:String):String{val n=LocalTime.now();val x=t
 }
 
 @Composable private fun DuaHome(q:QuranViewModel,m:Modifier){
- val refs=listOf("2:201","2:250","3:8","3:16","7:23","14:40","14:41","20:25","20:26","25:74","28:24","59:10","66:8")
- var data by remember(q.language.code){mutableStateOf(emptyList<Dua>())};var loading by remember(q.language.code){mutableStateOf(true)}
- LaunchedEffect(q.language.code){loading=true;data=runCatching{DuaRepository().load(q.language,refs)}.getOrDefault(emptyList());loading=false}
- LazyColumn(m.fillMaxSize(),contentPadding=PaddingValues(16.dp)){item{Text("Дуоҳо",fontSize=30.sp,fontWeight=FontWeight.ExtraBold);Text("Дуоҳои Қуръонӣ • оятҳои воқеӣ",fontSize=12.sp);Spacer(Modifier.height(10.dp))};if(loading)item{CircularProgressIndicator(Modifier.padding(20.dp))};items(data,key={it.ref}){d->Card(Modifier.fillMaxWidth().padding(vertical=5.dp),shape=RoundedCornerShape(21.dp)){Column(Modifier.padding(17.dp)){Text(d.ref,color=G,fontWeight=FontWeight.Bold);Text(d.arabic,Modifier.fillMaxWidth(),textAlign=TextAlign.Right,fontSize=23.sp,lineHeight=40.sp,fontFamily=FontFamily.Serif);Spacer(Modifier.height(7.dp));if(d.translation.isNotBlank())Text(d.translation,fontSize=16.sp,lineHeight=25.sp)}}}}
+ val cats=listOf("Ҳама","Тахаджуд","Пас аз хӯрок","Пеш аз хоб")
+ var selected by remember{mutableStateOf("Ҳама")}
+ val data=if(selected=="Ҳама")DuaData.items else DuaData.items.filter{it.category==selected}
+ LazyColumn(m.fillMaxSize(),contentPadding=PaddingValues(16.dp)){
+  item{
+   Text("Дуоҳо",fontSize=30.sp,fontWeight=FontWeight.ExtraBold)
+   Text("Дуоҳои Қуръонӣ ва зикрҳои саҳеҳ",fontSize=12.sp,color=MaterialTheme.colorScheme.onSurface.copy(.58f))
+   Spacer(Modifier.height(12.dp))
+   LazyRow(horizontalArrangement=Arrangement.spacedBy(8.dp)){items(cats){cat->FilterChip(selected=selected==cat,onClick={selected=cat},label={Text(cat)})}}
+   Spacer(Modifier.height(8.dp))
+  }
+  items(data,key={it.id}){d->Card(Modifier.fillMaxWidth().padding(vertical=6.dp),shape=RoundedCornerShape(24.dp)){
+   Column(Modifier.padding(18.dp)){
+    Text(d.category.uppercase(),fontSize=10.sp,color=G,fontWeight=FontWeight.Bold)
+    Text(d.title,fontSize=18.sp,fontWeight=FontWeight.ExtraBold)
+    Spacer(Modifier.height(12.dp))
+    Text(d.arabic,Modifier.fillMaxWidth(),textAlign=TextAlign.Right,fontSize=24.sp,lineHeight=42.sp,fontFamily=FontFamily.Serif)
+    Spacer(Modifier.height(10.dp));HorizontalDivider()
+    Spacer(Modifier.height(10.dp));Text(d.tajik,fontSize=16.sp,lineHeight=25.sp)
+    Spacer(Modifier.height(9.dp));Text(d.source,fontSize=10.sp,color=MaterialTheme.colorScheme.onSurface.copy(.5f))
+   }
+  }}
+ }
 }
-
 @Composable private fun Reader(q:QuranViewModel,s:Surah){
  Scaffold(topBar={Row(Modifier.fillMaxWidth().statusBarsPadding().padding(8.dp),verticalAlignment=Alignment.CenterVertically){TextButton({q.back()}){Text("‹ "+UiTexts.of(q.language.code).back)};Column(Modifier.weight(1f),horizontalAlignment=Alignment.CenterHorizontally){Text(s.tajik,fontWeight=FontWeight.Bold);Text(s.arabic,fontSize=15.sp)};TextButton({q.fontScale=if(q.fontScale>=1.5f)1f else q.fontScale+.25f}){Text("A⁺")}}}){pad->when{q.loading->Box(Modifier.fillMaxSize().padding(pad),contentAlignment=Alignment.Center){CircularProgressIndicator()};q.error!=null->Box(Modifier.fillMaxSize().padding(pad),contentAlignment=Alignment.Center){Text(q.error!!,Modifier.padding(24.dp),textAlign=TextAlign.Center)};else->LazyColumn(Modifier.fillMaxSize().padding(pad),contentPadding=PaddingValues(14.dp)){item{Text("سُورَةُ "+s.arabic,Modifier.fillMaxWidth(),textAlign=TextAlign.Center,fontSize=27.sp,color=E);Text(s.tajik+" • "+s.ayahs+" оят",Modifier.fillMaxWidth(),textAlign=TextAlign.Center,fontSize=12.sp)};items(q.ayahs,key={it.number}){a->Card(Modifier.fillMaxWidth().padding(vertical=6.dp),shape=RoundedCornerShape(23.dp)){Column(Modifier.padding(18.dp)){Text(a.arabic,Modifier.fillMaxWidth(),fontSize=(27*q.fontScale).sp,lineHeight=(50*q.fontScale).sp,textAlign=TextAlign.Right,fontFamily=FontFamily.Serif);HorizontalDivider(Modifier.padding(vertical=12.dp));if(a.translation.isNotBlank())Text(a.translation,fontSize=(17*q.fontScale).sp,lineHeight=(29*q.fontScale).sp);Text("﴿ ${a.number} ﴾",Modifier.fillMaxWidth(),textAlign=TextAlign.End,color=E,fontWeight=FontWeight.Bold)}}};item{Text(UiTexts.of(q.language.code).source+": "+q.language.source,Modifier.padding(12.dp),fontSize=10.sp,textAlign=TextAlign.Center)}}}}
 }
