@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.*
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.*
@@ -78,7 +79,9 @@ private val cities=listOf(
  }
 }
 
-@Composable private fun Hero(q:QuranViewModel,p:PrayerViewModel)=Box(Modifier.fillMaxWidth().height(245.dp).background(Brush.verticalGradient(listOf(D,Color(0xFF07533D),E)))){
+@Composable private fun Hero(q:QuranViewModel,p:PrayerViewModel)=Box(Modifier.fillMaxWidth().height(245.dp)){
+ Image(painterResource(com.jaborzodafayzali.qurantj.R.drawable.hero_image_placeholder),contentDescription=null,modifier=Modifier.fillMaxSize(),contentScale=ContentScale.Crop)
+ Box(Modifier.fillMaxSize().background(Brush.verticalGradient(listOf(Color.Transparent.copy(.05f),D.copy(.88f)))))
  Column(Modifier.fillMaxSize().padding(22.dp),verticalArrangement=Arrangement.SpaceBetween,horizontalAlignment=Alignment.CenterHorizontally){
   Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.SpaceBetween){Text("QURAN",color=G,fontWeight=FontWeight.ExtraBold,letterSpacing=2.sp);TextButton({q.dark=!q.dark}){Text(if(q.dark)"☀" else "☾",color=Color.White)}}
   Column(horizontalAlignment=Alignment.CenterHorizontally){Text("القرآن الكريم",fontSize=30.sp,color=Color.White);Text("ҚУРЪОНИ КАРИМ",color=Color.White,fontWeight=FontWeight.Bold);Text("Quran • Namaz • Qibla • Dua",color=Color.White.copy(.75f),fontSize=12.sp)}
