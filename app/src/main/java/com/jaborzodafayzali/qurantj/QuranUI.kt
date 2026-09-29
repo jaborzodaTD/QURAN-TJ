@@ -98,8 +98,8 @@ private fun Dashboard(q:QuranViewModel,p:PrayerViewModel,modifier:Modifier){
                 Row(Modifier.padding(18.dp),verticalAlignment=Alignment.CenterVertically){
                     Box(Modifier.size(56.dp).clip(RoundedCornerShape(18.dp)).background(Gold.copy(.18f)),contentAlignment=Alignment.Center){Text("☾",fontSize=31.sp,color=Emerald)}
                     Column(Modifier.padding(start=14.dp)){
-                        Text("Қуръони Карим",fontSize=18.sp,fontWeight=FontWeight.Bold)
-                        Text("114 сура • арабӣ + тарҷумаи тоҷикӣ",fontSize=12.sp)
+                        Text(UiTexts.of(q.language.code).quran,fontSize=18.sp,fontWeight=FontWeight.Bold)
+                        Text("114 сура • "+UiTexts.of(q.language.code).translation,fontSize=12.sp)
                     }
                 }
             }
@@ -174,8 +174,8 @@ private fun LanguageCard(q: QuranViewModel){
 private fun PrayerCard(p:PrayerViewModel){
     val t=p.times
     Column(Modifier.padding(16.dp)){
-        Text("Вақтҳои намоз",fontSize=21.sp,fontWeight=FontWeight.ExtraBold)
-        Text("бо вақти маҳаллии минтақа",fontSize=12.sp,color=MaterialTheme.colorScheme.onSurface.copy(.55f))
+        Text(UiTexts.of(q.language.code).prayerTimes,fontSize=21.sp,fontWeight=FontWeight.ExtraBold)
+        Text(UiTexts.of(q.language.code).location,fontSize=12.sp,color=MaterialTheme.colorScheme.onSurface.copy(.55f))
         Spacer(Modifier.height(10.dp))
         if(t==null){
             Card(Modifier.fillMaxWidth(),shape=RoundedCornerShape(22.dp)){Text("Аввал шаҳр ё ҷойгиршавиро интихоб кунед.",Modifier.padding(18.dp))}
@@ -209,7 +209,7 @@ private fun nextPrayer(t:PrayerTimes):String{
 @Composable
 private fun CityPicker(p:PrayerViewModel){
     Column(Modifier.padding(horizontal=16.dp)){
-        Text("Шаҳрҳои зуд",fontWeight=FontWeight.Bold,fontSize=16.sp)
+        Text(UiTexts.of(q.language.code).location,fontWeight=FontWeight.Bold,fontSize=16.sp)
         Spacer(Modifier.height(7.dp))
         Row(horizontalArrangement=Arrangement.spacedBy(6.dp)){
             AssistChip({p.useCity(PrayerLocation("Душанбе","Тоҷикистон",38.5598,68.7870))},{Text("Душанбе")})
@@ -239,7 +239,7 @@ private fun QiblaMini(p:PrayerViewModel){
 @Composable
 private fun Qibla(p:PrayerViewModel,modifier:Modifier){
     Column(modifier.fillMaxSize().padding(20.dp),horizontalAlignment=Alignment.CenterHorizontally){
-        Text("Қибла",fontSize=30.sp,fontWeight=FontWeight.ExtraBold)
+        Text(UiTexts.of("q.language.code").qibla,fontSize=30.sp,fontWeight=FontWeight.ExtraBold)
         Text(p.location?.city?:"Ҷойгиршавӣ лозим аст",color=MaterialTheme.colorScheme.onSurface.copy(.55f))
         Spacer(Modifier.height(20.dp))
         if(p.location==null) Text("Аз саҳифаи асосӣ ҷойгиршавиро фаъол кунед.")
