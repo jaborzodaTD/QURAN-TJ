@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
 import androidx.compose.ui.draw.clip
@@ -48,6 +49,7 @@ private val cities=listOf(
  PrayerLocation("Тбилиси","Грузия",41.7151,44.8271),PrayerLocation("Ашхабад","Туркменистан",37.9601,58.3261)
 )
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable fun QuranTJApp(q:QuranViewModel){
  val p:PrayerViewModel=viewModel(); var tab by remember{mutableIntStateOf(0)}; var settings by remember{mutableStateOf(false)}
  MaterialTheme(if(q.dark)darkColorScheme(primary=Color(0xFF62D5AC),secondary=G,background=D,surface=Color(0xFF0A241B)) else lightColorScheme(primary=E,secondary=G,background=C,surface=Color.White)){
