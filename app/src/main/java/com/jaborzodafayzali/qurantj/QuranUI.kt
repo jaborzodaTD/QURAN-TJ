@@ -51,9 +51,9 @@ private fun MainShell(q:QuranViewModel,p:PrayerViewModel){
     var tab by remember{mutableIntStateOf(0)}
     Scaffold(bottomBar={
         NavigationBar{
-            NavigationBarItem(tab==0,{tab=0},{Text("⌂")},{Text("Асосӣ")})
-            NavigationBarItem(tab==1,{tab=1},{Text("☾")},{Text("Қуръон")})
-            NavigationBarItem(tab==2,{tab=2},{Text("🧭")},{Text("Қибла")})
+            NavigationBarItem(tab==0,{tab=0},{Text("⌂")},{Text(UiTexts.of(q.language.code).home)})
+            NavigationBarItem(tab==1,{tab=1},{Text("☾")},{Text(UiTexts.of(q.language.code).quran)})
+            NavigationBarItem(tab==2,{tab=2},{Text("🧭")},{Text(UiTexts.of(q.language.code).qibla)})
         }
     }){pad->
         when(tab){
@@ -116,7 +116,7 @@ private fun Hero(q:QuranViewModel,p:PrayerViewModel){
     Box(Modifier.fillMaxWidth().height(275.dp).background(Brush.verticalGradient(listOf(Color(0xFF02150E),Color(0xFF07533D),Emerald)))){
         Column(Modifier.fillMaxSize().padding(22.dp),verticalArrangement=Arrangement.SpaceBetween,horizontalAlignment=Alignment.CenterHorizontally){
             Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.SpaceBetween){
-                Text("QURAN TJ",color=Gold,fontWeight=FontWeight.ExtraBold,letterSpacing=2.sp)
+                Text("QURAN",color=Gold,fontWeight=FontWeight.ExtraBold,letterSpacing=2.sp)
                 TextButton({q.dark=!q.dark}){Text(if(q.dark)"☀" else "☾",color=Color.White,fontSize=22.sp)}
             }
             Column(horizontalAlignment=Alignment.CenterHorizontally){
@@ -124,10 +124,49 @@ private fun Hero(q:QuranViewModel,p:PrayerViewModel){
                 Spacer(Modifier.height(10.dp))
                 Text("القرآن الكريم",fontSize=30.sp,color=Color.White,fontWeight=FontWeight.SemiBold)
                 Text("ҚУРЪОНИ КАРИМ",color=Color.White,fontWeight=FontWeight.Bold,letterSpacing=2.sp)
-                Text("намоз • қибла • Қуръон",color=Color.White.copy(.75f),fontSize=12.sp)
+                Text("Quran • Namaz • Qibla",color=Color.White.copy(.75f),fontSize=12.sp)
             }
             Text(p.location?.let{"📍 "+it.city+", "+it.country}?:"📍 Ҷойгиршавӣ муайян нашудааст",color=Gold,fontSize=12.sp)
         }
+    }
+}
+
+@Composable
+private fun LanguageCard(q: QuranViewModel){
+    var open by remember { mutableStateOf(false) }
+    val t=UiTexts.of(q.language.code)
+    Card(Modifier.fillMaxWidth().padding(horizontal=16.dp,vertical=8.dp),shape=RoundedCornerShape(22.dp)){
+        Row(Modifier.fillMaxWidth().clickable{open=true}.padding(16.dp),verticalAlignment=Alignment.CenterVertically){
+            Text("文",fontSize=22.sp,color=Emerald)
+            Column(Modifier.weight(1f).padding(start=12.dp)){
+                Text(t.chooseLanguage,fontWeight=FontWeight.Bold)
+                Text(q.language.nativeName,fontSize=12.sp,color=MaterialTheme.colorScheme.onSurface.copy(.55f))
+            }
+            Text("⌄",fontSize=20.sp,color=Emerald)
+        }
+    }
+    if(open){
+        AlertDialog(
+            onDismissRequest={open=false},
+            title={Text(t.chooseLanguage,fontWeight=FontWeight.ExtraBold)},
+            text={
+                LazyColumn(Modifier.heightIn(max=430.dp)){
+                    items(QuranLanguages.all(),key={it.code}){lang->
+                        Row(
+                            Modifier.fillMaxWidth().clickable{q.setLanguage(lang);open=false}.padding(vertical=12.dp),
+                            verticalAlignment=Alignment.CenterVertically
+                        ){
+                            Column(Modifier.weight(1f)){
+                                Text(lang.nativeName,fontWeight=FontWeight.SemiBold)
+                                Text(lang.englishName,fontSize=11.sp,color=MaterialTheme.colorScheme.onSurface.copy(.55f))
+                            }
+                            if(lang.code==q.language.code) Text("✓",color=Emerald,fontWeight=FontWeight.Bold)
+                        }
+                    }
+                }
+            },
+            confirmButton={TextButton({open=false}){Text(t.back)}}
+        )
     }
 }
 
@@ -253,7 +292,7 @@ private fun QuranHome(q:QuranViewModel,modifier:Modifier){
     var query by remember{mutableStateOf("")}
     val list=surahs.filter{query.isBlank()||it.tajik.contains(query,true)||it.arabic.contains(query)||it.number.toString()==query}
     LazyColumn(modifier.fillMaxSize(),contentPadding=PaddingValues(bottom=25.dp)){
-        item{Column(Modifier.padding(20.dp)){Text("Қуръони Карим",fontSize=29.sp,fontWeight=FontWeight.ExtraBold);Text("114 сура • арабӣ + тарҷумаи тоҷикӣ",color=MaterialTheme.colorScheme.onSurface.copy(.55f));Spacer(Modifier.height(12.dp));OutlinedTextField(query,{query=it},Modifier.fillMaxWidth(),singleLine=true,shape=RoundedCornerShape(20.dp),label={Text("Ҷустуҷӯи сура")})}}
+        item{Column(Modifier.padding(20.dp)){Text(UiTexts.of(q.language.code).quran,fontSize=29.sp,fontWeight=FontWeight.ExtraBold);Text("114 • "+UiTexts.of(q.language.code).translation,color=MaterialTheme.colorScheme.onSurface.copy(.55f));Spacer(Modifier.height(12.dp));OutlinedTextField(query,{query=it},Modifier.fillMaxWidth(),singleLine=true,shape=RoundedCornerShape(20.dp),label={Text(UiTexts.of(q.language.code).search)})}}
         items(list,key={it.number}){s->SurahCard(s){q.open(s)}}
     }
 }
@@ -271,14 +310,14 @@ private fun SurahCard(s:Surah,onClick:()->Unit){
 
 @Composable
 private fun Reader(q:QuranViewModel,s:Surah){
-    Scaffold(topBar={Row(Modifier.fillMaxWidth().statusBarsPadding().padding(8.dp),verticalAlignment=Alignment.CenterVertically){TextButton({q.back()}){Text("‹ Бозгашт")};Column(Modifier.weight(1f),horizontalAlignment=Alignment.CenterHorizontally){Text(s.tajik,fontWeight=FontWeight.Bold);Text(s.arabic,fontSize=16.sp)};TextButton({q.fontScale=if(q.fontScale==1f)1.2f else 1f}){Text("A⁺")}}}){pad->
+    Scaffold(topBar={Row(Modifier.fillMaxWidth().statusBarsPadding().padding(8.dp),verticalAlignment=Alignment.CenterVertically){TextButton({q.back()}){Text("‹ "+UiTexts.of(q.language.code).back)};Column(Modifier.weight(1f),horizontalAlignment=Alignment.CenterHorizontally){Text(s.tajik,fontWeight=FontWeight.Bold);Text(s.arabic,fontSize=16.sp)};TextButton({q.fontScale=if(q.fontScale==1f)1.2f else 1f}){Text("A⁺")}}}){pad->
         when{
             q.loading->Box(Modifier.fillMaxSize().padding(pad),contentAlignment=Alignment.Center){CircularProgressIndicator()}
             q.error!=null->Box(Modifier.fillMaxSize().padding(pad),contentAlignment=Alignment.Center){Text(q.error!!)}
             else->LazyColumn(Modifier.fillMaxSize().padding(pad),contentPadding=PaddingValues(14.dp)){
                 item{Text("سُورَةُ "+s.arabic,Modifier.fillMaxWidth(),textAlign=TextAlign.Center,fontSize=27.sp,color=Emerald);Text(s.tajik+" • "+s.ayahs+" оят",Modifier.fillMaxWidth(),textAlign=TextAlign.Center,fontSize=12.sp)}
                 items(q.ayahs,key={it.number}){a->Card(Modifier.fillMaxWidth().padding(vertical=6.dp),shape=RoundedCornerShape(24.dp)){Column(Modifier.padding(18.dp)){Text(a.arabic,Modifier.fillMaxWidth(),fontSize=(27*q.fontScale).sp,lineHeight=(50*q.fontScale).sp,textAlign=TextAlign.Right,fontFamily=FontFamily.Serif);HorizontalDivider(Modifier.padding(vertical=12.dp),color=Emerald.copy(.12f));Text(a.translation,fontSize=(17*q.fontScale).sp,lineHeight=(29*q.fontScale).sp);Text("﴿ "+a.number+" ﴾",Modifier.fillMaxWidth(),textAlign=TextAlign.End,color=Emerald,fontWeight=FontWeight.Bold)}}}
-                item{Text("Манбаи тарҷума: QuranEnc / Rowwad Translation Center.",Modifier.padding(12.dp),fontSize=10.sp,textAlign=TextAlign.Center,color=MaterialTheme.colorScheme.onSurface.copy(.55f))}
+                item{Text(UiTexts.of(q.language.code).source+": "+q.language.source,Modifier.padding(12.dp),fontSize=10.sp,textAlign=TextAlign.Center,color=MaterialTheme.colorScheme.onSurface.copy(.55f))}
             }
         }
     }
