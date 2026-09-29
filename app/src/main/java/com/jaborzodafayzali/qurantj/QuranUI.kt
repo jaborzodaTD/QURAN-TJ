@@ -18,6 +18,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.*
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.*
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.*
 import androidx.compose.ui.text.style.TextAlign
@@ -51,9 +54,9 @@ private fun MainShell(q:QuranViewModel,p:PrayerViewModel){
     var tab by remember{mutableIntStateOf(0)}
     Scaffold(bottomBar={
         NavigationBar{
-            NavigationBarItem(tab==0,{tab=0},{Text("⌂")},{Text(UiTexts.of(q.language.code).home)})
-            NavigationBarItem(tab==1,{tab=1},{Text("☾")},{Text(UiTexts.of(q.language.code).quran)})
-            NavigationBarItem(tab==2,{tab=2},{Text("🧭")},{Text(UiTexts.of(q.language.code).qibla)})
+            NavigationBarItem(selected=tab==0,onClick={tab=0},icon={Text("⌂")},label={Text(UiTexts.of(q.language.code).home)})
+            NavigationBarItem(selected=tab==1,onClick={tab=1},icon={Text("☾")},label={Text(UiTexts.of(q.language.code).quran)})
+            NavigationBarItem(selected=tab==2,onClick={tab=2},icon={Text("🧭")},label={Text(UiTexts.of(q.language.code).qibla)})
         }
     }){pad->
         when(tab){
@@ -278,9 +281,7 @@ private fun QiblaCompass(target:Double){
             drawCircle(Emerald.copy(.07f))
             drawCircle(Emerald,style=Stroke(4.dp.toPx()))
             drawCircle(Gold.copy(.22f),radius=size.minDimension*.35f,style=Stroke(2.dp.toPx()))
-            rotate(relative){
-                drawLine(Emerald,center,Offset(center.x,size.height*.10f),6.dp.toPx(),cap=StrokeCap.Round)
-            }
+            drawLine(Emerald,center,Offset(center.x,size.height*.10f),6.dp.toPx(),cap=StrokeCap.Round)
         }
         Text("ҚИБЛА",color=Emerald,fontWeight=FontWeight.ExtraBold,letterSpacing=2.sp)
         Text("КАЪБА",Modifier.offset(y=42.dp),color=Gold,fontWeight=FontWeight.Bold)
