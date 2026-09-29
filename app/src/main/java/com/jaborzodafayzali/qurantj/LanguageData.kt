@@ -17,19 +17,19 @@ object QuranLanguages {
     // Languages without a verified redistribution source stay visible as planned
     // options instead of silently substituting another language.
     val supported = listOf(
-        QuranLanguage("tg","Тоҷикӣ","Tajik","tajik_arifi",source="QuranEnc / Rowwad Translation Center"),
-        QuranLanguage("ru","Русский","Russian","russian_abu_adel",source="QuranEnc / Abu Adel"),
-        QuranLanguage("kk","Қазақша","Kazakh","kazakh_altai",source="QuranEnc / Khalifa Altai"),
-        QuranLanguage("uz","O‘zbekcha","Uzbek","uzbek_rwwad",source="QuranEnc / Rowwad Translation Center"),
-        QuranLanguage("ky","Кыргызча","Kyrgyz","kyrgyz_hakimov",source="QuranEnc / Shamsuddin Hakimov"),
+        QuranLanguage("tg","Тоҷикӣ","Tajik","tajik_arifi",source="QuranEnc • key resolved from API"),
+        QuranLanguage("ru","Русский","Russian","russian_abu_adel",source="QuranEnc • key resolved from API"),
+        QuranLanguage("kk","Қазақша","Kazakh","kazakh_altai",source="QuranEnc • key resolved from API"),
+        QuranLanguage("uz","O‘zbekcha","Uzbek","uzbek_rwwad",source="QuranEnc • key resolved from API"),
+        QuranLanguage("ky","Кыргызча","Kyrgyz","kyrgyz_hakimov",source="QuranEnc • key resolved from API"),
         QuranLanguage("tr","Türkçe","Turkish","turkish_rwwad",source="QuranEnc / Rowwad Translation Center"),
-        QuranLanguage("az","Azərbaycanca","Azerbaijani","azeri_musayev",source="QuranEnc / Ali Khan Musayev"),
+        QuranLanguage("az","Azərbaycanca","Azerbaijani","azeri_musayev",source="QuranEnc • key resolved from API"),
         QuranLanguage("ka","ქართული","Georgian","georgian_rwwad",source="QuranEnc / Rowwad Translation Center"),
         QuranLanguage("en","English","English","english_rwwad",source="QuranEnc / Rowwad Translation Center"),
         QuranLanguage("de","Deutsch","German","german_rwwad",source="QuranEnc / Rowwad Translation Center"),
-        QuranLanguage("fr","Français","French","french_rashid",source="QuranEnc / Rashid Maach"),
-        QuranLanguage("es","Español","Spanish","spanish_garcia",source="QuranEnc / Muhammad Isa Garcia"),
-        QuranLanguage("id","Bahasa Indonesia","Indonesian","indonesian_affairs",source="QuranEnc / Ministry of Religious Affairs"),
+        QuranLanguage("fr","Français","French","french_rashid",source="QuranEnc • key resolved from API"),
+        QuranLanguage("es","Español","Spanish","spanish_garcia",source="QuranEnc • key resolved from API"),
+        QuranLanguage("id","Bahasa Indonesia","Indonesian","indonesian_affairs",source="QuranEnc • key resolved from API"),
         QuranLanguage("ar","العربية","Arabic",null,rtl=true,source="Arabic Quran text; no translation selected")
     )
 
